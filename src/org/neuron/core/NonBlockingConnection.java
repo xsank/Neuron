@@ -4,17 +4,25 @@ import java.io.IOException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
+import org.neuron.handler.ConnectionHandler;
 import org.neuron.log.MyLogger;
 
 public class NonBlockingConnection {
 
 	private SocketChannel socketChannel;
 	private Dispatcher dispatcher;
+	private ConnectionHandler handler;
+	
 	
 	public NonBlockingConnection(SocketChannel socketChannel,Dispatcher dispatcher){
 		this.socketChannel=socketChannel;
 		this.dispatcher=dispatcher;
+		this.handler=new ConnectionHandler(this);
 		registerChannel();
+	}
+	
+	public ConnectionHandler getConnectionHandler(){
+		return handler;
 	}
 	
 	public SocketChannel getSocketChannel(){
