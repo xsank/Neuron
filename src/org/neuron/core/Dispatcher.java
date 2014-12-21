@@ -8,16 +8,19 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.neuron.handler.DispatcherHandler;
 import org.neuron.log.MyLogger;
 
 public class Dispatcher implements Runnable{
 
 	private static final int MAX_SELECT=5000;
 	private Selector selector;
+	private DispatcherHandler handler;
 	
 	public Dispatcher(){
 		try {
 			selector=Selector.open();
+			handler=new DispatcherHandler();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,7 +45,7 @@ public class Dispatcher implements Runnable{
 			try {
 				int eventCount=selector.select(MAX_SELECT);
 				if(eventCount>0){
-					handleReadWriteKeys();
+					handle();
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -53,9 +56,9 @@ public class Dispatcher implements Runnable{
 		
 	}
 	
-	public void registerChannel(SocketChannel channel,int ops){
+	public void registerChannel(NonBlockingConnection connection,int ops){
 		try {
-			channel.register(selector, ops);
+			connection.getSocketChannel().register(selector, ops, connection);
 		} catch (ClosedChannelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -67,28 +70,13 @@ public class Dispatcher implements Runnable{
 		return selector.keys().size();
 	}
 	
-	private void handleReadWriteKeys(){
+	private void handle(){
 		Set<SelectionKey> selectedKeys=selector.selectedKeys();
 		Iterator<SelectionKey> iterator=selectedKeys.iterator();
 		while(iterator.hasNext()){
 			SelectionKey key=iterator.next();
 			iterator.remove();
-			if(key.isValid()){
-				if(key.isReadable()){
-					handleReadEvent();
-				}
-				if(key.isWritable()){
-					handleWriteEvent();
-				}
-			}
+			handler.handle(key);
 		}
-	}
-	
-	private void handleReadEvent(){
-		
-	}
-	
-	private void handleWriteEvent(){
-		
 	}
 }

@@ -6,13 +6,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import org.neuron.controller.ConnectionController;
+import org.neuron.handler.LogicHandler;
 import org.neuron.log.MyLogger;
 
 public class Server implements Runnable{
 
 	private Acceptor acceptor;
 	private ExecutorService workerpool;
-	private LogicHanlder logicHanlder;
+	private LogicHandler logicHanlder;
 	
 	private String addr;
 	private int port;
@@ -24,12 +25,12 @@ public class Server implements Runnable{
 		this.acceptor=new Acceptor(new InetSocketAddress(addr,port));
 	}
 
-	public Server(String addr,int port,LogicHanlder logicHanlder){
+	public Server(String addr,int port,LogicHandler logicHanlder){
 		this(addr, port);
 		this.logicHanlder=logicHanlder;
 	}
 	
-	public void setLogicHandler(LogicHanlder logicHanlder){
+	public void setLogicHandler(LogicHandler logicHanlder){
 		this.logicHanlder=logicHanlder;
 	}
 

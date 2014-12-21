@@ -18,7 +18,7 @@ public class Acceptor {
 		connectionController=new ConnectionController();
 		try {
 			serverSocketChannel=ServerSocketChannel.open();
-			serverSocketChannel.configureBlocking(false);
+			serverSocketChannel.configureBlocking(true);
 			serverSocketChannel.socket().setSoTimeout(0);
 			serverSocketChannel.socket().setReuseAddress(true);
 			serverSocketChannel.socket().bind(address);

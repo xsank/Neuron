@@ -28,7 +28,7 @@ public class NonBlockingConnection {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		dispatcher.registerChannel(socketChannel, SelectionKey.OP_READ);
+		dispatcher.registerChannel(this, SelectionKey.OP_READ);
 	}
 	
 	public void close(){
