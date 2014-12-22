@@ -39,4 +39,8 @@ public class ConnectionHandler {
 	public void handleWriteData(){
 		
 	}
+	
+	public void refreshReadData(){
+		this.data.refreshReadData();
+	}
 }

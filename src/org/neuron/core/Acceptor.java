@@ -7,12 +7,14 @@ import java.nio.channels.SocketChannel;
 
 import org.neuron.controller.ConnectionController;
 import org.neuron.controller.DispatcherController;
+import org.neuron.handler.ILogicHandler;
 import org.neuron.log.MyLogger;
 
 public class Acceptor {
 	private ServerSocketChannel serverSocketChannel;
 	private DispatcherController dispatcherController;
 	private ConnectionController connectionController;
+	private LogicAdapter callback;
 	
 	public Acceptor(InetSocketAddress address){
 		connectionController=new ConnectionController();
@@ -29,13 +31,17 @@ public class Acceptor {
 		}
 		dispatcherController=new DispatcherController();
 	}
+	
+	public void addLogicAdapter(LogicAdapter logicAdapter){
+		this.callback=logicAdapter;
+	}
 
 	public void listen(){
 		while(serverSocketChannel.isOpen()){
 			try {
 				SocketChannel channel=serverSocketChannel.accept();
 				Dispatcher dispatcher=dispatcherController.getDispatcher();
-				connectionController.addConnection(new NonBlockingConnection(channel, dispatcher));
+				connectionController.addConnection(new NonBlockingConnection(callback,channel, dispatcher));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

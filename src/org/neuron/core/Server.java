@@ -6,14 +6,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import org.neuron.controller.ConnectionController;
+import org.neuron.handler.ILogicHandler;
 import org.neuron.handler.LogicHandler;
 import org.neuron.log.MyLogger;
 
 public class Server implements Runnable{
 
 	private Acceptor acceptor;
-	private ExecutorService workerpool;
-	private LogicHandler logicHanlder;
+	private LogicAdapter logicAdapter;
+	private ILogicHandler logicHanlder;
 	
 	private String addr;
 	private int port;
@@ -21,17 +22,21 @@ public class Server implements Runnable{
 	public Server(String addr,int port){
 		this.addr=addr;
 		this.port=port;
-		this.workerpool=new WorkerPool();
+		this.logicAdapter=new LogicAdapter(new WorkerPool());
 		this.acceptor=new Acceptor(new InetSocketAddress(addr,port));
 	}
 
-	public Server(String addr,int port,LogicHandler logicHanlder){
+	public Server(String addr,int port,ILogicHandler logicHandler){
 		this(addr, port);
-		this.logicHanlder=logicHanlder;
+		this.logicHanlder=logicHandler;
+		this.logicAdapter.setLogicHandler(logicHandler);
+		this.acceptor.addLogicAdapter(logicAdapter);
 	}
 	
-	public void setLogicHandler(LogicHandler logicHanlder){
-		this.logicHanlder=logicHanlder;
+	public void setLogicHandler(ILogicHandler logicHandler){
+		this.logicHanlder=logicHandler;
+		this.logicAdapter.setLogicHandler(logicHandler);
+		this.acceptor.addLogicAdapter(logicAdapter);
 	}
 
 	@Override
@@ -56,6 +61,7 @@ public class Server implements Runnable{
 	}
 	
 	public void close(){
-		
+		logicAdapter.close();
+		acceptor.close();
 	}
 }

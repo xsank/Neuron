@@ -41,6 +41,10 @@ public class NonblockingData {
 			}
 			return result;
 		}
+		
+		public void refresh(){
+			datas.clear();
+		}
 	}
 
 	private DataQueue readQueue;
@@ -61,5 +65,9 @@ public class NonblockingData {
 	
 	public byte[] getReadDataBytes(){
 		return readQueue.convertToBytes();
+	}
+	
+	public void refreshReadData(){
+		readQueue.datas.clear();
 	}
 }
