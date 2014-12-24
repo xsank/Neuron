@@ -5,9 +5,9 @@ import org.neuron.log.MyLogger;
 public class ShutdownHook extends Thread{
 
 	private Runtime runtime;
-	private Server server;
+	private IServer server;
 	
-	public ShutdownHook(Server server){
+	public ShutdownHook(IServer server){
 		this.server=server;
 	}
 	

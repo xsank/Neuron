@@ -4,9 +4,9 @@ import java.net.InetSocketAddress;
 import org.neuron.handler.ILogicHandler;
 import org.neuron.log.MyLogger;
 
-public class Server implements Runnable{
+public class Server implements IServer{
 
-	private Acceptor acceptor;
+	private Accepter acceptor;
 	private LogicAdapter logicAdapter;
 	private ILogicHandler logicHanlder;
 	
@@ -17,7 +17,7 @@ public class Server implements Runnable{
 		this.addr=addr;
 		this.port=port;
 		this.logicAdapter=new LogicAdapter(new WorkerPool());
-		this.acceptor=new Acceptor(new InetSocketAddress(addr,port));
+		this.acceptor=new Accepter(new InetSocketAddress(addr,port));
 	}
 
 	public Server(String addr,int port,ILogicHandler logicHandler){

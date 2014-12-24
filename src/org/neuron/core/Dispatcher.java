@@ -16,9 +16,15 @@ public class Dispatcher implements Runnable{
 	private static final int MAX_SELECT=5000;
 	private Selector selector;
 	private DispatcherHandler handler;
+	private int selectNum;
 	
 	public Dispatcher(){
+		this(MAX_SELECT);
+	}
+	
+	public Dispatcher(int num){
 		try {
+			selectNum=num;
 			selector=Selector.open();
 			handler=new DispatcherHandler();
 		} catch (IOException e) {

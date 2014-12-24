@@ -2,28 +2,33 @@ package org.neuron.core;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.Iterator;
 
 import org.neuron.controller.ConnectionController;
 import org.neuron.controller.DispatcherController;
-import org.neuron.handler.ILogicHandler;
 import org.neuron.log.MyLogger;
 
+
 public class Accepter {
-	private ServerSocketChannel serverSocketChannel;
+	private ServerSocketChannel serverChannel;
 	private DispatcherController dispatcherController;
 	private ConnectionController connectionController;
 	private LogicAdapter callback;
+	private Selector selector;
 	
 	public Accepter(InetSocketAddress address){
 		connectionController=new ConnectionController();
 		try {
-			serverSocketChannel=ServerSocketChannel.open();
-			serverSocketChannel.configureBlocking(true);
-			serverSocketChannel.socket().setSoTimeout(0);
-			serverSocketChannel.socket().setReuseAddress(true);
-			serverSocketChannel.socket().bind(address);
+			serverChannel=ServerSocketChannel.open();
+			serverChannel.configureBlocking(true);
+			serverChannel.socket().bind(address);
+			
+			selector=Selector.open();
+			serverChannel.register(selector,SelectionKey.OP_CONNECT);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -37,11 +42,19 @@ public class Accepter {
 	}
 
 	public void listen(){
-		while(serverSocketChannel.isOpen()){
+		while(serverChannel.isOpen()){
 			try {
-				SocketChannel channel=serverSocketChannel.accept();
-				Dispatcher dispatcher=dispatcherController.getDispatcher();
-				connectionController.addConnection(new NonBlockingConnection(callback,channel, dispatcher));
+				selector.select();
+				Iterator<SelectionKey> iterator=selector.selectedKeys().iterator();
+				while(iterator.hasNext()){
+					SelectionKey key=iterator.next();
+					iterator.remove();
+					if(key.isAcceptable()){
+						SocketChannel channel=serverChannel.accept();
+						Dispatcher dispatcher=dispatcherController.getDispatcher();
+						connectionController.addConnection(new NonBlockingConnection(callback,channel, dispatcher));
+					}
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -52,7 +65,7 @@ public class Accepter {
 	
 	public void close(){
 		try {
-			serverSocketChannel.close();
+			serverChannel.close();
 			dispatcherController.close();
 			connectionController.close();
 		} catch (IOException e) {
