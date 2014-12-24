@@ -10,13 +10,13 @@ import org.neuron.controller.DispatcherController;
 import org.neuron.handler.ILogicHandler;
 import org.neuron.log.MyLogger;
 
-public class Acceptor {
+public class Accepter {
 	private ServerSocketChannel serverSocketChannel;
 	private DispatcherController dispatcherController;
 	private ConnectionController connectionController;
 	private LogicAdapter callback;
 	
-	public Acceptor(InetSocketAddress address){
+	public Accepter(InetSocketAddress address){
 		connectionController=new ConnectionController();
 		try {
 			serverSocketChannel=ServerSocketChannel.open();
