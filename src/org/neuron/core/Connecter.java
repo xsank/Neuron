@@ -7,6 +7,8 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 
+import org.neuron.log.MyLogger;
+
 
 public class Connecter{
 
@@ -21,10 +23,13 @@ public class Connecter{
 			SocketChannel channel=SocketChannel.open();
 			channel.configureBlocking(false);
 			channel.connect(address);
+			
+			selector=Selector.open();
 			channel.register(selector, SelectionKey.OP_CONNECT);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			MyLogger.severeLog("client socket registed failed");
 		}
 	}
 	

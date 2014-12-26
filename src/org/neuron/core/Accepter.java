@@ -24,11 +24,11 @@ public class Accepter {
 		connectionController=new ConnectionController();
 		try {
 			serverChannel=ServerSocketChannel.open();
-			serverChannel.configureBlocking(true);
+			serverChannel.configureBlocking(false);
 			serverChannel.socket().bind(address);
 			
 			selector=Selector.open();
-			serverChannel.register(selector,SelectionKey.OP_CONNECT);
+			serverChannel.register(selector,SelectionKey.OP_ACCEPT);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -7,16 +7,12 @@ import org.neuron.core.NonBlockingConnection;
 public class DispatcherHandler {
 
 	public void handle(SelectionKey key){
-		if(key.isValid()){
-			NonBlockingConnection connection=(NonBlockingConnection) key.attachment();
-			if(key.isReadable()){
-				handleReadEvent(connection);
-			}
-			if(key.isWritable()){
-				handleWriteEvent(connection);
-			}
-		}else{
-			key.cancel();
+		NonBlockingConnection connection=(NonBlockingConnection) key.attachment();
+		if(key.isValid() && key.isReadable()){
+			handleReadEvent(connection);
+		}
+		if(key.isValid() && key.isWritable()){
+			handleWriteEvent(connection);
 		}
 	}
 	

@@ -2,6 +2,7 @@ package org.neuron.core;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
 import org.neuron.handler.ConnectionHandler;
@@ -34,6 +35,12 @@ public class NonBlockingConnection {
 	
 	public SocketChannel getSocketChannel(){
 		return socketChannel;
+	}
+	
+	public SelectionKey getSelectionKey(){
+		Selector selector=dispatcher.getSelector();
+		SelectionKey key=socketChannel.keyFor(selector);
+		return key;
 	}
 	
 	public void registerChannel(){

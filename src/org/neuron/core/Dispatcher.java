@@ -13,7 +13,7 @@ import org.neuron.log.MyLogger;
 
 public class Dispatcher implements Runnable{
 
-	private static final int MAX_SELECT=5000;
+	private static final int MAX_SELECT=2000;
 	private Selector selector;
 	private DispatcherHandler handler;
 	private int selectNum;
@@ -32,6 +32,10 @@ public class Dispatcher implements Runnable{
 			e.printStackTrace();
 			MyLogger.severeLog("create selector failed");
 		}
+	}
+	
+	public Selector getSelector(){
+		return selector;
 	}
 	
 	public void close(){

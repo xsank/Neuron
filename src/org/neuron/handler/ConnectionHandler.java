@@ -3,6 +3,7 @@ package org.neuron.handler;
 import java.io.IOException;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
 
 import org.neuron.core.NonBlockingConnection;
 import org.neuron.core.NonblockingData;
@@ -29,7 +30,11 @@ public class ConnectionHandler {
 			data.appendDataToReadQueue(readBuffer);
 			MyLogger.infoLog("read data size:",read);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			SelectionKey key=connection.getSelectionKey();
+			if(key!=null && key.isValid()){
+				key.cancel();
+				MyLogger.infoLog("client close socket forcely");
+			}
 			readBuffer.clear();
 			e.printStackTrace();
 			MyLogger.severeLog("read from socket channel error");
