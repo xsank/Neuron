@@ -26,10 +26,11 @@ public class NonblockingData {
 			byte[][] bs=new byte[datas.size()][];
 			int index=0;
 			for(ByteBuffer bf:datas){
-				int ts=bf.remaining();
+				int ts=bf.capacity()-bf.remaining();
 				size+=ts;
 				bs[index]=new byte[ts];
-				bf.get(bs[index++],0,ts);
+				bf.flip();
+				bf.get(bs[index],0,ts);
 			}
 			byte[] result=new byte[size];
 			int offset=0;
@@ -38,6 +39,18 @@ public class NonblockingData {
 					System.arraycopy(b, 0, result, offset, b.length);
 					offset+=b.length;
 				}
+			}
+			return result;
+		}
+		
+		public ByteBuffer convertToByteBuffer(){
+			int size=0;
+			for(ByteBuffer bf:datas){
+				size+=bf.remaining();
+			}
+			ByteBuffer result=ByteBuffer.allocate(size);
+			for(ByteBuffer bf:datas){
+				result.put(bf);
 			}
 			return result;
 		}
@@ -69,5 +82,13 @@ public class NonblockingData {
 	
 	public void refreshReadData(){
 		readQueue.datas.clear();
+	}
+	
+	public ByteBuffer getWriteBuffer(){
+		return writeQueue.convertToByteBuffer();
+	}
+	
+	public void refreshWriteData(){
+		writeQueue.datas.clear();
 	}
 }

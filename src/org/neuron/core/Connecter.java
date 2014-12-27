@@ -47,8 +47,11 @@ public class Connecter{
 					if(key.isConnectable()){
 						SocketChannel channel=(SocketChannel) key.channel();
 						if(channel.isConnectionPending()){
-							channel.finishConnect();
-							connection=new NonBlockingConnection(callback, channel, dispatcher);
+							if(channel.finishConnect()){
+								connection=new NonBlockingConnection(callback, channel, dispatcher);
+							}else{
+								MyLogger.infoLog("client cannot connect to the server");
+							}
 						}
 					}
 				}
@@ -57,6 +60,10 @@ public class Connecter{
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public NonBlockingConnection getConnection(){
+		return connection;
 	}
 	
 	public void close(){

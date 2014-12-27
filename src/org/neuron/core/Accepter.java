@@ -48,11 +48,13 @@ public class Accepter {
 				Iterator<SelectionKey> iterator=selector.selectedKeys().iterator();
 				while(iterator.hasNext()){
 					SelectionKey key=iterator.next();
-					iterator.remove();
 					if(key.isAcceptable()){
 						SocketChannel channel=serverChannel.accept();
 						Dispatcher dispatcher=dispatcherController.getDispatcher();
 						connectionController.addConnection(new NonBlockingConnection(callback,channel, dispatcher));
+						
+						iterator.remove();
+						MyLogger.infoLog("a new connection established");
 					}
 				}
 			} catch (IOException e) {

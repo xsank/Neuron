@@ -15,11 +15,11 @@ public class ConnectionHandler {
 	private ByteBuffer readBuffer;
 	private ByteBuffer writeBuffer;
 	private NonblockingData data;
-	private static final int BUFFER_SIZE=8192;
+	private static final int BUFFER_SIZE=6;
 	
 	public ConnectionHandler(NonBlockingConnection connection){
 		this.connection=connection;
-		this.data=new NonblockingData();
+		this.data=connection.getConnectionData();
 	}
 
 	public void handleReadData(){

@@ -19,7 +19,7 @@ public class DispatcherHandler {
 	public void handleReadEvent(NonBlockingConnection connection){
 		connection.getConnectionHandler().handleReadData();
 		connection.getLogicAdapter().handle(connection);
-		connection.getConnectionHandler().refreshReadData();
+		//connection.getConnectionHandler().refreshReadData();
 	}
 	
 	public void handleWriteEvent(NonBlockingConnection connection){

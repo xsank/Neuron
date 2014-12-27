@@ -54,6 +54,10 @@ public class Client implements IServer{
 		thread.start();
 	}
 	
+	public void syncWrite(String s){
+		connecter.getConnection().syncWrite(s);
+	}
+	
 	public void close(){
 		logicAdapter.close();
 		connecter.close();

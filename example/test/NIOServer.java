@@ -3,6 +3,7 @@ package test;
 import org.neuron.core.NonBlockingConnection;
 import org.neuron.core.Server;
 import org.neuron.handler.ILogicHandler;
+import org.neuron.log.MyLogger;
 
 public class NIOServer {
 
@@ -11,7 +12,8 @@ public class NIOServer {
 		@Override
 		public void handle(NonBlockingConnection connection) {
 			// TODO Auto-generated method stub
-			
+			byte[] data=connection.getConnectionData().getReadDataBytes();
+			MyLogger.infoLog("server recieve data:",new String(data));
 		}
 		
 	}
