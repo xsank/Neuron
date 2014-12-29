@@ -4,6 +4,7 @@ import org.neuron.core.Client;
 import org.neuron.core.IServer;
 import org.neuron.core.NonBlockingConnection;
 import org.neuron.handler.ILogicHandler;
+import org.neuron.log.MyLogger;
 
 public class NIOClient {
 
@@ -11,8 +12,8 @@ public class NIOClient {
 
 		@Override
 		public void handle(NonBlockingConnection connection) {
-			// TODO Auto-generated method stub
-			
+			byte[] data=connection.getConnectionData().getReadDataBytes();
+			MyLogger.infoLog("client recieve result:",new String(data));
 		}
 	}
 	
@@ -21,7 +22,7 @@ public class NIOClient {
 		client.start();
 		
 		//wait for the connection established
-		Thread.sleep(111);
+		Thread.sleep(2048);
 		client.syncWrite("test");
 	}
 }

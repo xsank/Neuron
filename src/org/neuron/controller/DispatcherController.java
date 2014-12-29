@@ -19,6 +19,7 @@ public class DispatcherController {
 		for(int i=0;i<size;i++){
 			Dispatcher dispatcher=new Dispatcher();
 			dispatchers.add(dispatcher);
+			
 			Thread thread=new Thread(dispatcher);
 			thread.setDaemon(true);
 			thread.start();

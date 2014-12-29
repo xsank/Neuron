@@ -15,7 +15,7 @@ public class ConnectionHandler {
 	private ByteBuffer readBuffer;
 	private ByteBuffer writeBuffer;
 	private NonblockingData data;
-	private static final int BUFFER_SIZE=6;
+	private static final int BUFFER_SIZE=8192;
 	
 	public ConnectionHandler(NonBlockingConnection connection){
 		this.connection=connection;

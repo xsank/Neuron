@@ -25,6 +25,7 @@ public class Client implements IServer{
 		this(addr, port);
 		this.logicHanlder=logicHandler;
 		this.logicAdapter.setLogicHandler(logicHandler);
+		this.connecter.addLogicAdapter(logicAdapter);
 	}
 	
 	public void setLogicHandler(ILogicHandler logicHandler){

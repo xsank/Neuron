@@ -11,9 +11,9 @@ public class NIOServer {
 
 		@Override
 		public void handle(NonBlockingConnection connection) {
-			// TODO Auto-generated method stub
 			byte[] data=connection.getConnectionData().getReadDataBytes();
 			MyLogger.infoLog("server recieve data:",new String(data));
+			connection.syncWrite("ok");
 		}
 		
 	}

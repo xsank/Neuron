@@ -19,13 +19,17 @@ public class Connecter{
 	
 	public Connecter(InetSocketAddress address){
 		try {
-			dispatcher=new Dispatcher(1);
 			SocketChannel channel=SocketChannel.open();
 			channel.configureBlocking(false);
 			channel.connect(address);
 			
 			selector=Selector.open();
 			channel.register(selector, SelectionKey.OP_CONNECT);
+			
+			dispatcher=new Dispatcher(1);
+			Thread thread=new Thread(dispatcher);
+			thread.setDaemon(true);
+			thread.start();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
