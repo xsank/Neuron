@@ -17,6 +17,10 @@ public class ConnectionController {
 		connections.add(connection);
 	}
 	
+	public int getSize(){
+		return connections.size();
+	}
+	
 	public void close(){
 		for(NonBlockingConnection connection:connections){
 			connection.close();

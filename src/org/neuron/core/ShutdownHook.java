@@ -18,7 +18,7 @@ public class ShutdownHook extends Thread{
 	}
 	
 	public void register(){
-		runtime=runtime.getRuntime();
+		runtime=Runtime.getRuntime();
 		runtime.addShutdownHook(this);
 		MyLogger.fineLog("add the server shut down hook");
 	}

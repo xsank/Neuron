@@ -16,4 +16,8 @@ public class Task implements Runnable{
 		logicHandler.handle(connection);
 	}
 
+	@Override
+	public String toString(){
+		return connection.toString();
+	}
 }

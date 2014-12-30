@@ -68,6 +68,7 @@ public class NonBlockingConnection {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			MyLogger.severeLog("socket channel write failed");
 		}
 	}
 	
@@ -94,6 +95,11 @@ public class NonBlockingConnection {
 	public void write(byte[] message){
 		ByteBuffer buffer=ByteBuffer.wrap(message);
 		data.appendDataToWriteQueue(buffer);
+	}
+	
+	@Override
+	public String toString(){
+		return socketChannel.toString();
 	}
 	
 	public void close(){

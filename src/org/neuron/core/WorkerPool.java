@@ -4,6 +4,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.neuron.handler.RejectHandler;
+
 public class WorkerPool extends ThreadPoolExecutor{
 	private static final int CORE_SIZE=Runtime.getRuntime().availableProcessors();
 	private static final int MAX_SIZE=CORE_SIZE*10;
@@ -19,7 +21,7 @@ public class WorkerPool extends ThreadPoolExecutor{
 
 	public WorkerPool(int corePoolSize, int maximumPoolSize,
 			long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
-		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
+		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,new RejectHandler());
 		((TaskQueue)getQueue()).init(this);
 	}
 }
