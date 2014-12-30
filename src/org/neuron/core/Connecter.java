@@ -44,24 +44,25 @@ public class Connecter{
 	public void listen(){
 		while(selector.isOpen()){
 			try {
+				
 				selector.select();
 				Iterator<SelectionKey> iterator=selector.selectedKeys().iterator();
 				while(iterator.hasNext()){
 					SelectionKey key=iterator.next();
+					iterator.remove();
+					
 					if(key.isConnectable()){
 						SocketChannel channel=(SocketChannel) key.channel();
 						if(channel.isConnectionPending()){
-							if(channel.finishConnect()){
-								connection=new NonBlockingConnection(callback, channel, dispatcher);
-							}else{
-								MyLogger.infoLog("client cannot connect to the server");
-							}
+							channel.finishConnect();
+							connection=new NonBlockingConnection(callback, channel, dispatcher);
 						}
 					}
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				MyLogger.infoLog("client connect to the server error");
 			}
 		}
 	}
