@@ -34,6 +34,10 @@ public class Client implements IServer{
 		this.connecter.addLogicAdapter(logicAdapter);
 	}
 	
+	public void setReconnect(){
+		connecter.setReconnect();
+	}
+	
 	@Override
 	public void run(){
 		ShutdownHook shutdownHook=new ShutdownHook(this);
@@ -51,12 +55,17 @@ public class Client implements IServer{
 			MyLogger.severeLog("no logic handler has been set");
 			return;
 		}
+		
 		Thread thread=new Thread(this);
 		thread.start();
 	}
 	
 	public void syncWrite(String s){
-		connecter.getConnection().syncWrite(s);
+		if(connecter.isConnected()){
+			connecter.getConnection().syncWrite(s);
+		}else {
+			MyLogger.severeLog("connection still not established,write failed");
+		}
 	}
 	
 	public void close(){
