@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
+import java.nio.channels.SocketChannel;
 
 import org.neuron.core.NonBlockingConnection;
 import org.neuron.core.NonblockingData;
@@ -32,11 +33,11 @@ public class ConnectionHandler {
 		} catch (IOException e) {
 			SelectionKey key=connection.getSelectionKey();
 			if(key!=null && key.isValid()){
+				SocketChannel channel=(SocketChannel) key.channel();
 				key.cancel();
-				MyLogger.infoLog("client close socket forcely");
+				MyLogger.infoLog(channel," close socket forcely");
 			}
 			readBuffer.clear();
-			e.printStackTrace();
 			MyLogger.severeLog("read from socket channel error");
 		}
 	}

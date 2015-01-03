@@ -66,8 +66,6 @@ public class NonBlockingConnection {
 		try {
 			socketChannel.write(buffer);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			MyLogger.severeLog("socket channel write failed");
 		}
 	}

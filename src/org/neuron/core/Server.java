@@ -52,6 +52,7 @@ public class Server implements IServer{
 		}
 		Thread thread=new Thread(this);
 		thread.start();
+		MyLogger.infoLog("server has been stated");
 	}
 	
 	public void close(){

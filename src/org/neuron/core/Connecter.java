@@ -78,7 +78,7 @@ public class Connecter{
 				}
 			} catch (IOException e) {
 				MyLogger.infoLog("client connect to the server failed");
-				if(reconnected){connect();}
+				if(reconnected){connect();}else{break;}
 			}
 		}
 	}

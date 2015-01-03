@@ -26,11 +26,12 @@ public class NonblockingData {
 			byte[][] bs=new byte[datas.size()][];
 			int index=0;
 			for(ByteBuffer bf:datas){
-				int ts=bf.capacity()-bf.remaining();
+				bf.flip();
+				int ts=bf.limit();
 				size+=ts;
 				bs[index]=new byte[ts];
-				bf.flip();
 				bf.get(bs[index],0,ts);
+				bf.clear();
 			}
 			byte[] result=new byte[size];
 			int offset=0;
